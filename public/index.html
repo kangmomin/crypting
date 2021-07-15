@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>암호기</title>
+</head>
+<body>
+    <form method="get" action="">
+        암호화 : <input type="radio" name="crypto" class="crypto" value="encrypt" checked/>
+        복호화 : <input type="radio" name="crypto" class="crypto" value="decrypt" /> <br />
+        2진법 : <input type="radio" name="mode" onclick="none()" value="1" checked/> <br />
+        8진법 : <input type="radio" name="mode" onclick="none()" value="2" /> <br />
+        16진법 : <input type="radio" name="mode" onclick="none()" value="3" /> <br />
+        32진법 : <input type="radio" name="mode" onclick="none()" value="4" /> <br />
+        DES : <input type="radio" name="mode" onclick="block()" value="5" /> <br />
+        AES : <input type="radio" name="mode" onclick="block()" value="6" /> <br />
+        Base64 : <input type="radio" name="mode" onclick="none()" value="7" /> <br />
+        모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
+        <textarea placeholder="text" name="content"></textarea> <br />
+        <input type="text" name="key" id="key" placeholder="key" style="display: none;"/> <br />
+        <input type="button" onclick="clicked()" value="결과값 보기">
+    </form>
+    <textarea id="output"></textarea>
+    <hr />
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-Pmj5PXQbVsnhJ7Ez" 
+    data-ad-width   = "320" 
+    data-ad-height  = "100"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-s3Z1xOLKzyK2lw53" 
+    data-ad-width   = "320" 
+    data-ad-height  = "100"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-4h8d4h5nFAddMA2K" 
+    data-ad-width   = "300" 
+    data-ad-height  = "250"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-2ICxYG199yu4j8oE" 
+    data-ad-width   = "320" 
+    data-ad-height  = "100"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-kpbnK3aFM2iSJVD0" 
+    data-ad-width   = "250" 
+    data-ad-height  = "250"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-YjmuuFFCTFtxXYjB" 
+    data-ad-width   = "728" 
+    data-ad-height  = "90"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-NhcRuOBNwzYq1TsM" 
+    data-ad-width   = "320" 
+    data-ad-height  = "50"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <ins class="kakao_ad_area" style="display:none;" 
+    data-ad-unit    = "DAN-syFi3Fo8XsmlzdSW" 
+    data-ad-width   = "160" 
+    data-ad-height  = "600"></ins> 
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <script>
+        function block() {
+            const key = document.querySelector('#key')
+            key.style.display = "block"
+        }
+        function none() {
+            const key = document.querySelector('#key')
+            key.style.display = "none"
+        }
+        function clicked() {
+            const
+                crypto = document.querySelector('input[name="crypto"]:checked').value,
+                mode = document.querySelector('input[name="mode"]:checked').value,
+                content = document.querySelector("textarea[name='content']").value,
+                key = document.querySelector("#key").value || ''
+
+            $.ajax({
+                url: 'http://koldin.myddns.me:4002/value',
+                type: 'post',
+                data:{
+                    key : key,
+                    content : content,
+                    mode : mode,
+                    crypto : crypto
+
+                },
+                success: (result) => {
+                    document.querySelector("#output").innerHTML = result
+                }
+            })
+        }
+    </script>
+</body>
+</html>
