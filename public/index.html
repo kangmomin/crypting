@@ -26,9 +26,12 @@
         모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
         <textarea placeholder="text" name="content" style="width: 345px; height: 160px;"></textarea> <br />
         <input type="text" name="key" id="key" placeholder="key" style="display: none;"/> <br />
-        <input type="button" onclick="clicked()" value="결과값 보기"> <br />
+        <input type="button" onclick="clicked()" value="결과값 보기">
+        <button onclick="go()" id="go" style="display: none;" />해독된 사이트로 이동하기</button>
+        <br />
     </form>
     <textarea id="output" style="width: 345px; height: 160px;"></textarea>
+    <input type="hidden" id="links" value="" />
     <hr />
         <h3>이 줄부턴 광고만 있습니다. 순수 테스트 목적이며 클릭을 하시지 않으시는 한 수익은 들어오지 않습니다.</h3>
         <h3>서비스 이용의 쾌적화를 위하여 하단에 분리 배치하였습니다.</h3>
@@ -101,10 +104,20 @@
 
                 },
                 success: (result) => {
-                    console.log(result)
+                    if(result.slice(0, 4) == "http") {
+                        document.querySelector("#links").value = result
+                        document.querySelector("#go").style.display = 'block'
+                    }
                     document.querySelector("#output").innerHTML = result
                 }
             })
+        }
+
+        function go() {
+            window.open(
+                document.querySelector("#links").value,
+                '_blank'
+            )
         }
     </script>
 </body>
