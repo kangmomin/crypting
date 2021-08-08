@@ -6,6 +6,8 @@ const bp = require('body-parser')
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile)
 app.post('*', bp.urlencoded({ extended: false}))
+app.set('views', __dirname + '\\public')
+
 const encrypt = {
     binary : (num, text) => {
         let encodes10 = new Array(),
@@ -83,20 +85,25 @@ const decrypt = {
     },
     toBase64: (encoded) => {
         const encodedWord = crypto.enc.Base64.parse(encoded)
-        const decoded = crypto.enc.Utf8.stringify(encodedWord)
-        return decoded;
+        try {
+            const decoded = crypto.enc.Utf8.stringify(encodedWord)
+            return decoded
+        } catch (ex) {
+            console.log("error : " + ex)
+            return "올바른 값을 입력해 주십시오."
+        }
     },
     toMorese: (text) => {
-        const decodedText = morsify.decode(text)
-        return decodedText
+        try {
+            const decodedText = morsify.decode(text)
+            return decodedText
+        } catch (e) {
+            return `모스부호 ERROR. \n error : ${e}`
+        }
     }
 }
 
-app.get('/', (req, res) => res.render('C:/public/index.html'))
-
-app.get('/text', (req, res) => {
-    res.send('Lorem ipsum dolor sit amet consectetur Jadipisicing elit. Repellendus suscipit iste perspiciatis itaque, excepturi quos delectus numquam vero autem qui, tenetur ex voluptatem deserunt voluptatibus necessitatibus culpa, sunt beatae facilis. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt, sint officia ipsam mollitia aliquam id neque deleniti accusantium quibusdam in quidem facilis sit velit nam dignissimos maxime dolor voluptas Suscipit, commodi? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem a eveniet ipsa, quaerat numquam voluptates, in')
-})
+app.get('/', (req, res) => res.render('index.html'))
 
 app.post('/value', (req, res) => {
     let {crypto, mode, key ,content} = req.body
@@ -133,4 +140,4 @@ app.post('/value', (req, res) => {
     res.send(result)
 })
 
-app.listen(4002)
+app.listen(4002, () => console.log(`server is running on port 4002`))
