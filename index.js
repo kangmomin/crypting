@@ -46,9 +46,8 @@ const encrypt = {
 const decrypt = {
     binary: (num, text) => {
         text = text.replace(/\s/g, '')
-        text = text.replace(/(.{2})/g,"$1,")
+        text = text.replace(/(.{2})/g,"$1 ")
         const args = text.trim().split(' ')
-        console.log(args)
         let textArr = new Array(),
             _text = new String()
         for (arg of args) {
