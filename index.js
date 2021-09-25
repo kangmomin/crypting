@@ -45,7 +45,16 @@ const encrypt = {
 
 const decrypt = {
     binary: (num, text) => {
+        text = text.replace(/\s/g, '')
+        let parsedText = ""
+        for (let i = 0; i < text.length; i++) {
+            if(!(i % 2)) {
+                parsedText += String(text.substr(i, 2)) + " "
+            }
+        }
+        text = parsedText
         const args = text.trim().split(' ')
+        console.log(args)
         let textArr = new Array(),
             _text = new String()
         for (arg of args) {
@@ -84,7 +93,7 @@ const decrypt = {
         return endText
     },
     toBase64: (encoded) => {
-        const encodedWord = crypto.enc.Base64.parse(encoded)
+        const encodedWord = crypto.enc.Base64.parse(encoded.replace(/\s+/g, ''))
         try {
             const decoded = crypto.enc.Utf8.stringify(encodedWord)
             return decoded
@@ -111,7 +120,6 @@ app.post('/value', (req, res) => {
     const caseLength = 8
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress
     console.log(ip)
-
     if(crypto === 'decrypt') { 
         mode = Number(mode) + caseLength
     }
