@@ -9,75 +9,71 @@
 </head>
 <body>
     <style>
-        h3 {
+        h3, h2, h4 {
             text-align: center;
         }
     </style>
-    <form method="get" action="">
-        복호화 : <input type="radio" name="crypto" class="crypto" value="decrypt" checked/>
-        암호화 : <input type="radio" name="crypto" class="crypto" value="encrypt" /> <br />
-        Base64 : <input type="radio" name="mode" onclick="none()" value="7" checked /> <br />
-        2진법 : <input type="radio" name="mode" onclick="none()" value="1" /> <br />
-        8진법 : <input type="radio" name="mode" onclick="none()" value="2" /> <br />
-        16진법 : <input type="radio" name="mode" onclick="none()" value="3" /> <br />
-        32진법 : <input type="radio" name="mode" onclick="none()" value="4" /> <br />
-        DES : <input type="radio" name="mode" onclick="block()" value="5" /> <br />
-        AES : <input type="radio" name="mode" onclick="block()" value="6" /> <br />
-        모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
-        <textarea placeholder="text" name="content" style="width: 345px; height: 160px;"></textarea> <br />
-        <input type="text" name="key" id="key" placeholder="key" style="display: none;"/> <br />
-        <input type="button" onclick="clicked()" value="결과값 보기">
-        <button onclick="go()" id="go" style="display: none;" />해독된 사이트로 이동하기</button>
-        <br />
-    </form>
-    <textarea id="output" style="width: 345px; height: 160px;"></textarea>
-    <input type="hidden" id="links" value="" />
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <form method="get" action="">
+                복호화 : <input type="radio" name="crypto" class="crypto" value="decrypt" checked/>
+                암호화 : <input type="radio" name="crypto" class="crypto" value="encrypt" /> <br />
+                Base64 : <input type="radio" name="mode" onclick="none()" value="7" checked /> <br />
+                2진법 : <input type="radio" name="mode" onclick="none()" value="1" /> <br />
+                8진법 : <input type="radio" name="mode" onclick="none()" value="2" /> <br />
+                16진법 : <input type="radio" name="mode" onclick="none()" value="3" /> <br />
+                32진법 : <input type="radio" name="mode" onclick="none()" value="4" /> <br />
+                DES : <input type="radio" name="mode" onclick="block()" value="5" /> <br />
+                AES : <input type="radio" name="mode" onclick="block()" value="6" /> <br />
+                모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
+                <textarea placeholder="text" name="content" style="width: 345px; height: 160px;"></textarea> <br />
+                <input type="text" name="key" id="key" placeholder="key" style="display: none;"/> <br />
+                <input type="button" onclick="clicked()" value="결과값 보기">
+            </form>
+            <button onclick="go()" id="go" style="display: none;" />해독된 사이트로 이동하기</button>
+            <br />
+            <textarea id="output" style="width: 345px; height: 160px;"></textarea>
+            <input type="hidden" id="links" value="" />
+        </div>
+        <div>
+            <ins class="kakao_ad_area" style="display:none;" 
+            data-ad-unit    = "DAN-syFi3Fo8XsmlzdSW" 
+            data-ad-width   = "160" 
+            data-ad-height  = "600"></ins> 
+        </div>
+    </div>
     <hr />
-        <h3>이 줄부턴 광고만 있습니다. 순수 테스트 목적이며 클릭을 하시지 않으시는 한 수익은 들어오지 않습니다.</h3>
-        <h3>서비스 이용의 쾌적화를 위하여 하단에 분리 배치하였습니다.</h3>
-        <h3>감사합니다.</h3>
+        <h2>-update-</h2>
+        <h4>21-09-26 : 이제 띄어쓰기가 없는 진수의 복호화일 경우에도 해독을 해줍니다.</h4>
+        <h4>21-10-21 : 광고 최소화 및 위치 이동</h4>
+        <h4>21-10-27 : 댓글창 개설(개발자만 확인 가능) 원하는 추가 기능 등을 적어주세요!</h4>
     <hr />
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-Pmj5PXQbVsnhJ7Ez" 
-    data-ad-width   = "320" 
-    data-ad-height  = "100"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-s3Z1xOLKzyK2lw53" 
-    data-ad-width   = "320" 
-    data-ad-height  = "100"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-4h8d4h5nFAddMA2K" 
-    data-ad-width   = "300" 
-    data-ad-height  = "250"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-2ICxYG199yu4j8oE" 
-    data-ad-width   = "320" 
-    data-ad-height  = "100"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-kpbnK3aFM2iSJVD0" 
-    data-ad-width   = "250" 
-    data-ad-height  = "250"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-YjmuuFFCTFtxXYjB" 
-    data-ad-width   = "728" 
-    data-ad-height  = "90"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-NhcRuOBNwzYq1TsM" 
-    data-ad-width   = "320" 
-    data-ad-height  = "50"></ins> 
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <ins class="kakao_ad_area" style="display:none;" 
-    data-ad-unit    = "DAN-syFi3Fo8XsmlzdSW" 
-    data-ad-width   = "160" 
-    data-ad-height  = "600"></ins> 
+    
+    <textarea id="reply" placeholder="개발자에게 보내고 싶은 말을 적어주세요." style='width:"800px"; height:"400px";'></textarea>
+    <input type="button" value="보내기" onclick="replySend()" id="replyBtn" />
     <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
     <script>
+        function replySend() {
+            const reply = document.querySelector('#reply')
+            const replyBtn = document.querySelector("#replyBtn")
+            const replyData = reply.value
+            
+            reply.style.display = "hidden"
+            replyBtn.style.display = "hidden"
+            
+            $.ajax({
+                url: "http://koldin.myddns.me:4002/reply",
+                method: "post",
+                data: {
+                    reply: replyData
+                },
+                success: () => {
+                    reply.style.display = "block"
+                    replyBtn.style.display = "block"
+                }
+            })
+        }
+        
         function block() {
             const key = document.querySelector('#key')
             key.style.display = "block"
@@ -107,8 +103,10 @@
                     if(result.slice(0, 4) == "http") {
                         document.querySelector("#links").value = result
                         document.querySelector("#go").style.display = 'block'
+                    } else {
+                        document.querySelector("#go").style.display = 'none'
                     }
-                    document.querySelector("#output").innerHTML = result
+                    document.querySelector("#output").value = result
                 }
             })
         }

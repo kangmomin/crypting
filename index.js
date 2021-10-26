@@ -2,6 +2,7 @@ const app = require('express')()
 const crypto = require('crypto-js')
 const morsify = require('morsify')
 const bp = require('body-parser')
+const reply = require('./reply')
 
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile)
@@ -107,6 +108,7 @@ const decrypt = {
 
 app.get('/', (req, res) => res.render('index.html'))
 
+app.post('/reply', reply)
 app.post('/value', (req, res) => {
     let {crypto, mode, key ,content} = req.body
     let result
