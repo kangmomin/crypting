@@ -3,6 +3,9 @@ const mysqli = require('./admin/conn')
 
 app.post('*', async (req, res) => {
     const data = req.body.reply
+    if(data.length < 1) {
+        return res.status(400).json("empty value")
+    }
     
     try {
         const replyData = await addReply(data)

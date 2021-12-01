@@ -3,6 +3,7 @@ const crypto = require('crypto-js')
 const morsify = require('morsify')
 const bp = require('body-parser')
 const reply = require('./reply')
+const mysqli = require('./admin/conn')
 
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile)
@@ -107,6 +108,13 @@ const decrypt = {
 }
 
 app.get('/', (req, res) => res.render('index.html'))
+app.get('/reply', (req, res) => {
+    mysqli.query("SELECT * FROM reply", (err, data) => {
+        if(err) 
+            return res.status(400).json("error")
+        res.status(200).json(data)
+    })
+})
 
 app.post('/reply', reply)
 app.post('/value', (req, res) => {
