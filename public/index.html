@@ -4,155 +4,132 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <title>암호기</title>
 </head>
 <body>
     <style>
-        h3, h2, h4 {
-            text-align: center;
-        }
-    </style>
-    <div style="display: flex; justify-content: space-between;">
-        <div>
-            <form method="get" action="">
-                복호화 : <input type="radio" name="crypto" class="crypto" value="decrypt" checked/>
-                암호화 : <input type="radio" name="crypto" class="crypto" value="encrypt" /> <br />
-                Base64 : <input type="radio" name="mode" onclick="none()" value="7" checked /> <br />
-                2진법 : <input type="radio" name="mode" onclick="none()" value="1" /> <br />
-                8진법 : <input type="radio" name="mode" onclick="none()" value="2" /> <br />
-                16진법 : <input type="radio" name="mode" onclick="none()" value="3" /> <br />
-                32진법 : <input type="radio" name="mode" onclick="none()" value="4" /> <br />
-                DES : <input type="radio" name="mode" onclick="block()" value="5" /> <br />
-                AES : <input type="radio" name="mode" onclick="block()" value="6" /> <br />
-                모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
-                <textarea placeholder="text" name="content" style="width: 345px; height: 160px;"></textarea> <br />
-                <input type="text" name="key" id="key" placeholder="key" style="display: none;"/> <br />
-                <input type="button" onclick="clicked()" value="결과값 보기">
-            </form>
-            <button onclick="go()" id="go" style="display: none;" />해독된 사이트로 이동하기</button>
-            <br />
-            <textarea id="output" style="width: 345px; height: 160px;"></textarea>
-            <input type="hidden" id="links" value="" />
-        </div>
-        <div>
-            <ins class="kakao_ad_area" style="display:none;" 
-            data-ad-unit    = "DAN-syFi3Fo8XsmlzdSW" 
-            data-ad-width   = "160" 
-            data-ad-height  = "600"></ins> 
-        </div>
-    </div>
-    <hr />
-        <h2>-update-</h2>
-        <h4>21-09-26 : 이제 띄어쓰기가 없는 진수의 복호화일 경우에도 해독을 해줍니다.</h4>
-        <h4>21-10-21 : 광고 최소화 및 위치 이동</h4>
-        <h4>21-10-27 : 댓글창 개설 원하는 추가 기능 등을 적어주세요!</h4>
-        <h4>21-12-01 : 댓글창 표시</h4>
-    <hr />
-        <h2>-다음 업뎃 예고-</h2>
-        <h4>시험 주간이라 좀 걸리겠지만</h4>
-        <h4>다음은 라이브 모드</h4>
-        <h4>링크(http)가 아닐시 다시 디코딩 하기</h4>
-    <hr />
-    
-    <textarea id="reply" placeholder="개발자에게 보내고 싶은 말을 적어주세요." style='width:"800px"; height:"400px";'></textarea>
-    <input type="button" value="보내기" onclick="replySend()" id="replyBtn" />
-    <img src="https://t1.daumcdn.net/cfile/blog/9971254B5E3A670916" style="display: none;" id="loadingImg" width="50px" height="50px">
-    <br><hr><br>
-    <div id="replyArea"></div>
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-    <script>
-        window.onload = () => {
-            showReply()
+        body {
+            display: flex;
+            flex-direction: column;
         }
         
-        function showReply() {
-            let root = document.getElementById("replyArea")
-            root.innerHTML = ""
-            
-            $.ajax({
-                url: "http://koldin.myddns.me:4002/reply",
-                method: "get",
-                success: data => {
-                    
-                    console.log(data)
-                    
-                    // if(data == ) {
-                    //     return root.innerHTML += "<p>error;;</p>"
-                    // }
-                    
-                    for(_data of data) {
-                        root.innerHTML += `
-                        <li>${_data.description}-${_data.created}</li>
-                        `
-                    }
-                }
-            })
+        #update {
+            margin: 0 auto;
         }
+        #root {
+            width: 1000px;
+        }
+    </style>
+    <div id="root">
+        <form method="get" action="">
+            복호화 : <input type="radio" name="crypto" class="crypto" onclick="clicked()" value="decrypt" checked/>
+            암호화 : <input type="radio" name="crypto" class="crypto" onclick="clicked()" value="encrypt" /> <br />
+            Base64 : <input type="radio" name="mode" onclick="none()" value="7" checked /> <br />
+            2진법 : <input type="radio" name="mode" onclick="none()" value="1" /> <br />
+            8진법 : <input type="radio" name="mode" onclick="none()" value="2" /> <br />
+            16진법 : <input type="radio" name="mode" onclick="none()" value="3" /> <br />
+            32진법 : <input type="radio" name="mode" onclick="none()" value="4" /> <br />
+            DES : <input type="radio" name="mode" onclick="block()" value="5" /> <br />
+            AES : <input type="radio" name="mode" onclick="block()" value="6" /> <br />
+            모스 부호 : <input type="radio" name="mode" onclick="none()" value="8" /> <br />
+            <br />
+            base64로 사이트가 나올때까지 디코딩
+            <input type="checkbox" onclick="clicked()" id="isRepeat"> <br />
+            <textarea placeholder="text" name="content" style="width: 345px; height: 160px;" onkeyup="clicked()"></textarea> <br />
+            <input type="text" name="key" id="key" placeholder="key" onkeyup="clicked()" style="display: none;"/> <br />
+            <input type="button" onclick="clicked()" value="결과값 보기">
+        </form>
+        <button onclick="go()" id="go" style="display: none;" />해독된 사이트로 이동하기</button>
+        <br />
+        <textarea id="output" style="width: 345px; height: 160px;"></textarea>
+        <input type="hidden" id="links" value="" />
+    </div>
+    <div id="update">
+        <details>
+            <summary>업데이트</summary>
+            <hr />
+                <h4>21-09-26 : 이제 띄어쓰기가 없는 진수의 복호화일 경우에도 해독을 해줍니다.</h4>
+                <del><h4>21-10-21 : 광고 최소화 및 위치 이동</h4></del>
+                <del><h4>21-10-27 : 댓글창 개설 원하는 추가 기능 등을 적어주세요!</h4></del>
+                <del><h4>21-12-01 : 댓글창 표시</h4></del>
+                <h4>22-03-01 : 사이트 링크 변경 및 완전 정적 사이트로 전환</h4>
+                <h4>22-03-01 : 광고 삭제, 업데이트창 간소화, 라이브모드(상시작동)</h4>
+                <h4>22-03-01 : 사이트 정적화를 위해 댓글 기능 삭제</h4>
+                <h4>22-03-01 : 자동 반복 디코딩 기능 추가</h4>
+            <hr />
+        </details>
+    </div>
     
-        function replySend() {
-            const reply = document.querySelector('#reply')
-            const replyBtn = document.querySelector("#replyBtn")
-            const loadingImg = document.querySelector("#loadingImg").style
-            const replyData = reply.value
-            
-            loadingImg.display = "block"
-            reply.style.display = "none"
-            replyBtn.style.display = "none"
-            
-            $.ajax({
-                url: "http://koldin.myddns.me:4002/reply",
-                method: "post",
-                data: {
-                    reply: replyData
-                },
-                success: () => {
-                }
-            })
-            
-            setTimeout(() => {
-                reply.style.display = "block"
-                replyBtn.style.display = "block"
-                loadingImg.display = "none"
-                showReply()
-            }, 3000)
-        }
+    <br><hr><br>
+    <div id="replyArea"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    <script src="./morsify.js"></script>
+    <script>
         
         function block() {
             const key = document.querySelector('#key')
             key.style.display = "block"
+            clicked()
         }
         function none() {
             const key = document.querySelector('#key')
             key.style.display = "none"
+            clicked()
         }
+        
         function clicked() {
             const
                 crypto = document.querySelector('input[name="crypto"]:checked').value,
-                mode = document.querySelector('input[name="mode"]:checked').value,
+                key = document.querySelector("#key").value || '',
+                isRepeat = document.querySelector("#isRepeat").checked,
+                caseLength = 8
+            let mode = document.querySelector('input[name="mode"]:checked').value,
                 content = document.querySelector("textarea[name='content']").value,
-                key = document.querySelector("#key").value || ''
-
-            $.ajax({
-                url: 'http://koldin.myddns.me:4002/value',
-                type: 'post',
-                data:{
-                    key : key,
-                    content : content,
-                    mode : mode,
-                    crypto : crypto
-
-                },
-                success: (result) => {
-                    if(result.slice(0, 4) == "http") {
-                        document.querySelector("#links").value = result
-                        document.querySelector("#go").style.display = 'block'
-                    } else {
-                        document.querySelector("#go").style.display = 'none'
-                    }
-                    document.querySelector("#output").value = result
+                result
+            
+            if (crypto === 'decrypt') mode = Number(mode) + caseLength
+            // if (mode !== "7" || crypto === 'decrypt')
+            
+            if (isRepeat) {
+                mode = "15"
+                for (let i = 0; i < 1000; i++) {
+                    result = decode()
+                    content = result
+                    if(result.slice(0, 4) == "http") break
                 }
-            })
+            } else {
+                result = decode(result)
+            }
+            
+            if(result.slice(0, 4) == "http") {
+                document.querySelector("#links").value = result
+                document.querySelector("#go").style.display = 'block'
+            } else {
+                document.querySelector("#go").style.display = 'none'
+            }
+            document.querySelector("#output").value = result
+            function decode() {
+                let result
+                switch (Number(mode)) {
+                    case 1: result = encrypt.binary(2, content); break;
+                    case 2: result = encrypt.binary(8, content); break;
+                    case 3: result = encrypt.binary(16, content); break;
+                    case 4: result = encrypt.binary(32, content); break;
+                    case 5: result = encrypt.toDes(content, key); break;
+                    case 6: result = encrypt.toAes(content, key); break;
+                    case 7: result = encrypt.toBase64(content); break;
+                    case 8: result = encrypt.toMorese(content); break;
+                    case 1 + caseLength: result = decrypt.binary(2, content); break;
+                    case 2 + caseLength: result = decrypt.binary(8, content); break;
+                    case 3 + caseLength: result = decrypt.binary(16, content); break;
+                    case 4 + caseLength: result = decrypt.binary(32, content); break;
+                    case 5 + caseLength: result = decrypt.toDes(content, key); break;
+                    case 6 + caseLength: result = decrypt.toAes(content, key); break;
+                    case 7 + caseLength: result = decrypt.toBase64(content); break;
+                    case 8 + caseLength: result = decrypt.toMorese(content); break;
+                }
+                return result
+            }
         }
 
         function go() {
@@ -160,6 +137,103 @@
                 document.querySelector("#links").value,
                 '_blank'
             )
+        }
+        const encrypt = {
+            binary : (num, text) => {
+                let encodes10 = new Array(),
+                    encodes = new String()
+        
+                for(word of text) {
+                    encodes10.push(word.charCodeAt(0))
+                }
+                for(encode of encodes10) {
+                    encodes += encode.toString(num) + ' '
+                }
+                
+                return encodes
+            },
+            toDes: (text, key) => {
+                let encrypt = CryptoJS.DES.encrypt(text, key).toString()
+        
+                return encrypt
+            },
+            toAes: (text, key) => {
+                let encrypt = CryptoJS.AES.encrypt(text, key).toString()
+        
+                return encrypt
+            },
+            toBase64: (text) => {
+                const encodedWord = CryptoJS.enc.Utf8.parse(text)
+                const encoded = CryptoJS.enc.Base64.stringify(encodedWord)
+                return encoded
+            },
+            toMorese: (text) => {
+                const encodedText = morsify.encode(text)
+                return encodedText
+            }
+        }
+        
+        const decrypt = {
+            binary: (num, text) => {
+                text = text.replace(/\s/g, '')
+                text = text.replace(/(.{2})/g,"$1 ")
+                const args = text.trim().split(' ')
+                let textArr = new Array(),
+                    _text = new String()
+                for (arg of args) {
+                    if(arg.length > 8) return "error"
+                    let decrypted = parseInt(arg, num)
+                    decrypted = String.fromCharCode(decrypted)
+                    textArr.push(decrypted)
+                }
+                for(encode of textArr) {
+                    _text += encode
+                }
+                return _text
+            },
+            toDes: (encrypted, secretKey) => {
+                let bytes = CryptoJS.DES.decrypt(encrypted, secretKey),
+                    decrypted = bytes.toString(),
+                    _16Binary = decrypted.match(/.{2}/g),
+                    endText = new String()
+        
+                for (b of _16Binary) {
+                    endText += String.fromCharCode(parseInt(b, 16))
+                }
+            
+                return endText
+            },
+            toAes: (encrypted, secretKey) => {
+                let bytes = CryptoJS.AES.decrypt(encrypted, secretKey),
+                    decrypted = bytes.toString(),
+                    _16Binary = decrypted.match(/.{2}/g),
+                    endText = new String()
+        
+                for (b of _16Binary) {
+                    endText += String.fromCharCode(parseInt(b, 16))
+                }
+            
+                return endText
+            },
+            toBase64: (encoded) => {
+                console.log(encoded)
+                const encodedWord = CryptoJS.enc.Base64.parse(encoded.replace(/\s+/g, ''))
+                try {
+                    const decoded = CryptoJS.enc.Utf8.stringify(encodedWord)
+                    return decoded
+                } catch (ex) {
+                    console.log("error : " + ex)
+                    return "올바른 값을 입력해 주십시오."
+                }
+            },
+            toMorese: (text) => {
+                try {
+                    const decodedText = morsify.decode(text)
+                    return decodedText
+                } catch (e) {
+                    return `모스부호 ERROR. \n error : ${e}`
+                }
+            }
         }
     </script>
 </body>
